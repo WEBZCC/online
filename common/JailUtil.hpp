@@ -14,15 +14,60 @@
 
 namespace JailUtil
 {
+// The Child-Root directory structure looks like this:
+// Ideally, we would have all the jails in a sub-dir.
+//
+// child-root/
+// ├── <jail-id-1>
+// ├── <jail-id-N>
+// └── tmp
+//     └── incoming
 
 /// General temporary directory owned by us.
-constexpr const char CHILDROOT_TMP_PATH[] = "/tmp";
+constexpr const char CHILDROOT_TMP_DIR[] = "tmp";
 
 /// Files uploaded by users are stored in this sub-directory of child-root.
 constexpr const char CHILDROOT_TMP_INCOMING_PATH[] = "/tmp/incoming";
 
 /// The LO installation directory with jail.
 constexpr const char LO_JAIL_SUBPATH[] = "lo";
+
+/// Returns the jails path within the Child-Root.
+/// Child-Root/
+inline std::string getJailsPath(const std::string& childRoot)
+{
+    return Poco::Path::forDirectory(childRoot).toString();
+}
+
+/// Returns a jail's path, given it's Jail-ID.
+/// Child-Root/<jailId>
+inline std::string getJailPath(const std::string& childRoot, const std::string& jailId)
+{
+    return Poco::Path::forDirectory(getJailsPath(childRoot)).pushDirectory(jailId).toString();
+}
+
+/// Returns the temp directory path in the Child-Root.
+/// Child-Root/Tmp
+inline std::string getChildRootTmpPath(const std::string& childRoot)
+{
+    return Poco::Path::forDirectory(childRoot).pushDirectory(CHILDROOT_TMP_DIR).toString();
+}
+
+/// Returns the temp incoming-files directory path in the Child-Root.
+/// Child-Root/Tmp/Incoming
+inline std::string getChildRootTmpIncomingPath(const std::string& childRoot)
+{
+    return Poco::Path::forDirectory(childRoot)
+        .pushDirectory(CHILDROOT_TMP_INCOMING_PATH)
+        .toString();
+}
+
+/// Returns the LO path for the given root path.
+/// Root/Lo
+inline std::string getLoPath(const std::string& root)
+{
+    return Poco::Path::forDirectory(root).pushDirectory(LO_JAIL_SUBPATH).toString();
+}
 
 /// Bind mount a jail directory.
 bool bind(const std::string& source, const std::string& target);

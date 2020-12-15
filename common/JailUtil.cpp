@@ -156,7 +156,7 @@ void cleanupJails(const std::string& root)
         return;
     }
 
-    if (FileUtil::Stat(root + '/' + LO_JAIL_SUBPATH).exists())
+    if (FileUtil::Stat(JailUtil::getLoPath(root)).exists())
     {
         // This is a jail.
         removeJail(root);
