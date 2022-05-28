@@ -4974,7 +4974,6 @@ int COOLWSD::innerMain()
 #if !MOBILEAPP
     SigUtil::setUserSignals();
     SigUtil::setFatalSignals("wsd " COOLWSD_VERSION " " COOLWSD_VERSION_HASH);
-    SigUtil::setTerminationSignals();
 #endif
 
 #if !MOBILEAPP
