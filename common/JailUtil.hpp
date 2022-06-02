@@ -23,6 +23,8 @@ namespace JailUtil
 // └── tmp
 //     └── incoming
 
+constexpr const char JAIL_SIGNAL_LOG_FILE_PATH[] = "/tmp/signal.log";
+
 /// General temporary directory owned by us.
 constexpr const char CHILDROOT_TMP_DIR[] = "tmp";
 
@@ -67,6 +69,23 @@ inline std::string getChildRootTmpIncomingPath(const std::string& childRoot)
 inline std::string getLoPath(const std::string& root)
 {
     return Poco::Path::forDirectory(root).pushDirectory(LO_JAIL_SUBPATH).toString();
+}
+
+/// Returns the full path to the jailed signalLog file.
+/// Root/tmp/signal.log
+inline std::string getJailedSignalLogFilePath(const std::string& root, const std::string& domain)
+{
+    const std::string filename = std::string(JAIL_SIGNAL_LOG_FILE_PATH) + domain;
+    return Poco::Path::forDirectory(root).setFileName(filename).toString();
+}
+
+/// Returns the temp directory path in the Child-Root.
+/// Child-Root/<jail-id>/tmp/signal.log<domain>
+inline std::string getChildRootSignalLogFilePath(const std::string& childRoot,
+                                                 const std::string& jailId,
+                                                 const std::string& domain)
+{
+    return getJailedSignalLogFilePath(getJailPath(childRoot, jailId), domain);
 }
 
 /// Bind mount a jail directory.

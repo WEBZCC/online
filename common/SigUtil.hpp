@@ -58,6 +58,16 @@ namespace SigUtil
     void setUnattended();
 
 #if !MOBILEAPP
+
+    /// Set the signalLog output file path.
+    /// When empty, stderr is used.
+    void signalLogSetFilePath(const std::string& path);
+
+    /// Open the signalLog file.
+    void signalLogOpen();
+    /// Close the signalLog file.
+    void signalLogClose();
+
     /// Signal safe prefix logging
     void signalLogPrefix();
     /// Signal safe logging

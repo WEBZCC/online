@@ -2202,6 +2202,9 @@ void COOLWSD::innerInitialize(Application& self)
     JailUtil::setupChildRoot(getConfigValue<bool>(conf, "mount_jail_tree", true), ChildRoot,
                              SysTemplate);
 
+    // Dump signalLogs into the child-root/tmp directory.
+    SigUtil::signalLogSetFilePath(JailUtil::getChildRootTmpPath(ChildRoot));
+
     LOG_DBG("FileServerRoot before config: " << FileServerRoot);
     FileServerRoot = getPathFromConfig("file_server_root_path");
     LOG_DBG("FileServerRoot after config: " << FileServerRoot);
