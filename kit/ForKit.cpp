@@ -745,6 +745,7 @@ int main(int argc, char** argv)
     }
 #endif
 
+    SigUtil::signalLogSetFilePath(JailUtil::getJailedSignalLogFilePath(childRoot, "frk"));
     SigUtil::setUserSignals();
 
     const int parentPid = getppid();

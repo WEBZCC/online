@@ -49,6 +49,10 @@ namespace SigUtil
 
     void checkDumpGlobalState(GlobalDumpStateFn dumpState);
 
+    extern "C" { typedef void (*ForwardSigUsr2Fn)(void); }
+
+    void checkForwardSigUsr2(ForwardSigUsr2Fn forwardSigUsr2);
+
     /// Add a message to a round-robin buffer to be dumped on fatal signal
     void addActivity(const std::string &message);
 
@@ -62,6 +66,9 @@ namespace SigUtil
     /// Set the signalLog output file path.
     /// When empty, stderr is used.
     void signalLogSetFilePath(const std::string& path);
+
+    /// Extracts the contents of the given signalLog file and dumps into the log.
+    void extractSignalLogFile(const std::string& path);
 
     /// Open the signalLog file.
     void signalLogOpen();

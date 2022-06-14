@@ -23,6 +23,7 @@
 #include <string>
 
 #include "Log.hpp"
+#include <SigUtil.hpp>
 
 namespace JailUtil
 {
@@ -122,7 +123,10 @@ static bool safeRemoveDir(const std::string& path)
 
 void removeJail(const std::string& root)
 {
-    LOG_INF("Removing jail [" << root << "].");
+    LOG_INF("Removing jail [" << root << ']');
+
+    // Always extract any signalLog files before unmounting/removing a jail.
+    SigUtil::extractSignalLogFile(JailUtil::getJailedSignalLogFilePath(root, "kit"));
 
     // Unmount the tmp directory. Don't care if we fail.
     const std::string tmpPath = Poco::Path(root, "tmp").toString();
